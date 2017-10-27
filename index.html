@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="author" content="Ana Germano 201105083 & Diogo Fernandes 201503723">
+        <meta name="description" content="Jogo do Nim">
+
+        <!-- imagem na pagina-->
+        <link href="UnityPlayer.png" rel="shortcut icon" type="image/png"/>
+        
+        <title>Nim Game</title>
+
+        <!-- CSS Style -->
+        <link rel="stylesheet" href="style.css" type="text/css">
+        
+        <!--JAVASCRIPT files -->
+        <script src="script.js"></script>
+        <script src="scriptGame.js"></script>
+        
+    </head>
+    <body onload="">
+        <!-- cabeçalho da pagina -->
+        <div class="header">
+            
+            <!-- logotipo -->
+            <div class="logotipo">
+                <img src="logo.png" alt="">
+            </div>
+            
+            <!-- menu -->
+            <div id="menu">
+                <ul>
+                    <li><a href="#" onclick="newGame()">New Game</a></li>
+                    <li><a href="#" onclick="displayHighs()">Highscores</a></li>
+                </ul>
+            </div>
+        </div>
+        
+        <!-- corpo do site -->
+        <div class="bodytabgame">
+           
+            <!-- login -->
+            <div id="login">
+                <p>Username: <input id="username" type="text"></p>
+                <p>Password: <input id="password" type="password"></p>
+                <button id="register" onclick="">Register</button>
+                &nbsp; <!-- espaço -->
+                <button id="submit" onclick="authentication()">Login</button>
+            </div>
+            
+            <!-- modo de contra computador ou multiplayer -->
+            <div id="modePlay">
+                <p></p>
+                <button id="singleplayer" onclick="singlePlayer()">Singleplayer</button>
+                <button id="multiplayer" onclick="multiPlayer()">Multiplayer</button>
+            </div>
+            
+            <!-- dificuldade -->
+             <div id="mode">
+                 <form>
+                     <p>Difficulty mode:</p>
+                     <p><input type="radio" name="difficulty" id="beginner">Beginner<br>
+                     <input type="radio" name="difficulty" id="intermediate">Intermediate<br>
+                     <input type="radio" name="difficulty" id="expert">Expert</p>
+                     <p>Board size: <input type="number" id="numLinhas" min="3" size="6"></p>
+                    <p>Who starts the game?</p>
+                    <p><input type="radio" name="player" id="computer">Computer<br>
+                    <input type="radio" name="player" id="human">Human</p>                 
+                     <button type="button" value="Play Offline" onclick="buttonPlayGame()">Play Game</button>
+                </form>
+            </div>
+            
+            <!-- base do jogo e as regras -->
+            <div id="game">
+                <div id="rules">
+                    <h3>Game Rules</h3>
+                    <p>Nim is a Mathematical Strategy Games where two player remove objects from different stacks one at a time. <br> Each Player at each move, has to remove one or more objects from the same stack. The player that removes the last object LOST! </p>  
+                                
+                    <!-- comandos do jogo -->   
+                    <div id="comand">
+                        <button type="button" value="Quit Game" onclick="quitGame()" id="quit">Quit Game</button> 
+                        <p></p>
+                    </div>   
+                </div>
+                
+                <!-- tabuleiro do jogo -->
+                <div id="tabuleiro"></div>
+                <div id="pcturn">
+                      <button type="button" value="0" onclick="aiTurn()" id="computerturn">Computer Turn</button> 
+                </div>
+            </div>
+            <div id="highs">
+                <h3>Highscores</h3>
+            </div>
+        </div>   
+    </body>
+</html>
