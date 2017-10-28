@@ -24,14 +24,16 @@
             
             <!-- logotipo -->
             <div class="logotipo">
-                <img src="logo.png" alt="">
+                <img src="NimLogo.gif" alt="">
             </div>
             
             <!-- menu -->
             <div id="menu">
                 <ul>
+                    <li><a href="#" id="login_menu" onclick="">Login</a></li>
                     <li><a href="#" onclick="newGame()">New Game</a></li>
                     <li><a href="#" onclick="displayHighs()">Highscores</a></li>
+                    <li><a href="#" onclick="logout()">Logout</a></li>
                 </ul>
             </div>
         </div>
@@ -62,7 +64,7 @@
                      <p><input type="radio" name="difficulty" id="beginner">Beginner<br>
                      <input type="radio" name="difficulty" id="intermediate">Intermediate<br>
                      <input type="radio" name="difficulty" id="expert">Expert</p>
-                     <p>Board size: <input type="number" id="numLinhas" min="3" size="6"></p>
+                     <p>Board size: <input type="number" id="numLinhas" min="3" max="8"></p>
                     <p>Who starts the game?</p>
                     <p><input type="radio" name="player" id="computer">Computer<br>
                     <input type="radio" name="player" id="human">Human</p>                 
@@ -74,7 +76,7 @@
             <div id="game">
                 <div id="rules">
                     <h3>Game Rules</h3>
-                    <p>Nim is a Mathematical Strategy Games where two player remove objects from different stacks one at a time. <br> Each Player at each move, has to remove one or more objects from the same stack. The player that removes the last object LOST! </p>  
+                    <p>Nim is a Mathematical Strategy Games where two player remove objects from different stacks one at a time. <br> Each Player at each move, has to remove one or more objects from the same stack. The player that removes the last object wins! </p>  
                                 
                     <!-- comandos do jogo -->   
                     <div id="comand">

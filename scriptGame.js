@@ -2,6 +2,8 @@
 var tableLines = 3;
 var level;
 var difficulty;
+var pointsUser = 0; //pontos do user
+var pointsPC = 0; //pontos do pc
 
 var tab;
 var sumall=0;
@@ -30,19 +32,16 @@ function buildBoard(){
     for(var i=0; i<tableLines; i++){
         var lines = document.createElement('div');
         lines.setAttribute("id", "lines");
-        lines.setAttribute('dataset-line-active', '1');
 
         for(var j=0; j<1+(i*2); j++){
             var columns = document.createElement('div');
             columns.setAttribute("class", "parts");
             var img = document.createElement('IMG');
-            img.setAttribute("src", "granada.png");
+            img.setAttribute("src", "p_granada.png");
             img.setAttribute("id", "img_parts");
             img.setAttribute("alt", "");
             columns.setAttribute("id", i+","+j);
             columns.setAttribute("onclick", "player_draught("+i+","+j+")");
-            columns.setAttribute('dataset-part-active', '1');
-            var removebutton = document.getElementById("botao" + i);
             columns.appendChild(img);
             lines.appendChild(columns);
         }
@@ -114,8 +113,10 @@ function player_draught(line , col) {
     if ((next_to_that==20 || next_to_that==21) && tab[line]!=0)
         next_to_that=line
     if (next_to_that==line && tab[line]!=0) remove(line,col)
-        if (sumall==0)
+        if (sumall==0){
             alert("You Lost :( Try Again :)");
+            pointsPC++;
+        }
 }
 
 
@@ -132,6 +133,7 @@ function  aiBegginerTurn(){
         alert("parabens ganhaste um rebuçado!");
         toggleDisplayNone('pcturn');
         toggleDisplayNone('quit');
+        pointsUser++;
     }
 
     next_to_that = 20;
@@ -189,6 +191,7 @@ function winningStrategy() {
         alert("You win :)")
         toggleDisplayNone('pcturn');
         toggleDisplayNone('quit');
+        pointsUser++;
     }
     var X = boardXor(tab);
 

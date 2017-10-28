@@ -4,10 +4,11 @@ function authentication(){
     var user = document.getElementById('username').value;
     var pass = document.getElementById('password').value;
 
-    document.getElementById('login').innerHTML = 'Welcome, ' + user + '! ' + '<button id="logout" onclick="logout()">Logout</button>' ;
+    document.getElementById('login_menu').innerHTML = user;
     
     toggleDisplayBlock('modePlay');
     toggleDisplayBlock('menu');
+    toggleDisplayNone('login');
 }
 
 // Botao Logout
@@ -67,7 +68,8 @@ function displayHighs(){
     toggleDisplayNone('game');
     toggleDisplayNone('mode');
     toggleDisplayBlock('highs');
-    //tab_highs();
+    toggleDisplayNone('modePlay');
+    tab_highs();
 }
 
 //Se o elemento estiver escondido, mostra-o. Caso contrario, esconde-o
@@ -84,63 +86,65 @@ function toggleDisplayBlock(id){
 function tab_highs(){
     removetable("highscore_table");
 
-    var body =  document.getElementById("highs");
+    var body = document.getElementById("highs");
     var tab = document.createElement('div');
     tab.setAttribute("id", "highscore_table");
 
     for(var i=0; i<1; i++){
         var title = document.createElement('div');
         title.setAttribute("id", "title");
-        for(var j=0; j<4; i++){
+        for(var j=0; j<4; j++){
             var colunas = document.createElement('div');
             colunas.setAttribute("id", "colunas");
             if(j==0){
-                colunas.textContent = "Num";
-                title.appendChild(colunas);
-            }
-            if(j==1){
                 colunas.textContent = "Name";
                 title.appendChild(colunas);
             }
-            if(j==2){
-                colunas.textContent = "Mode";
-                title.appendChild(colunas);
-            }
-            if(j==3){
+            if(j==1){
                 colunas.textContent = "Scores";
                 title.appendChild(colunas);
             }
+            if(j==2){
+                colunas.textContent = "Computer Scores";
+                title.appendChild(colunas);
+            }
+            if(j==3){
+                colunas.textContent = "Mode" ;
+                title.appendChild(colunas);
+            }
         }
+        tab.appendChild(title);
     }
-    
-    //num maximo de 10 linhas
-    for(var i=0; i<10; i++){
+ 
+   //corpo da tabela
+    for(var i=0; i<1; i++){
         var linhas = document.createElement('div');
         linhas.setAttribute("id", "linhas");
-        for(var j=0; j<4; i++){
+        for(var j=0; j<4; j++){
             var col = document.createElement('div');
             col.setAttribute("id", "col");
             if(j==0){
-                var num = document.createTextNode(i + 1);
-                col.appendChild(num);
+                var name = document.getElementById('username').value;
+                col.innerHTML = name;
                 linhas.appendChild(col);
             }
             if(j==1){
-                col.textContent = "Name";
+               var pontosuser = document.createTextNode(pointsUser);
+                 col.appendChild(pontosuser);
                 linhas.appendChild(col);
             }
             if(j==2){
-                var mode = document.createTextNode(level);
-                coll.appendChild(mode);
+               var pontospc = document.createTextNode(pointsPC);
+                col.appendChild(pontospc);
                 linhas.appendChild(col);
             }
             if(j==3){
-                col.textContent = "Scores";
-                linhas.appendChild(col);
+                var mode = document.createTextNode(level);
+                col.appendChild(mode);
+                linhas.appendChild(col);   
             }
         }
+        tab.appendChild(linhas);
     }
-    tab.appendChild(title);
-    tab.appendChild(linhas);
-    body.appendChild(tab);
+    body.appendChild(tab); 
 }

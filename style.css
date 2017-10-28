@@ -43,31 +43,35 @@ button:hover{
 /* header styles */
 .header{
     display: block;
-    width: 100%;
-    height: auto;
+    min-height: 100%;
     position: relative;
-    margin: 0px auto;
 }
 
 .logotipo{
-    display: inline-block;
-    float: left;
-    width: 80%;
+    display: block;
+    float:inherit;
+    margin: 0 auto;
+    width: 100%;
     height: 30%;
+    align-content: center;
+    text-align: center;
+    
 }
 
 .logotipo img{
-    max-width: 200px;
-    max-height: 150px;
+    max-width: 250px;
+    max-height: 200px;
     width: auto;
     height: auto;
+    align-content: center;
 }
 
 #menu{
     display: none;
-    float: right;
-    width: 20%;
-    height: 30%;
+    width: 100%;
+    align-content: center;
+    text-align: center;
+    padding-top: 0;
 }
 
 #menu ul{
@@ -83,17 +87,13 @@ button:hover{
 #menu ul li a{
     padding: 2px 10px;
     display: inline-block;
-    
-    /*visual*/
     text-decoration: none;
-     color: #1C1C1C;
+    color: #1C1C1C;
     font-family: sans-serif;
-    font-weight: bold;
 }
 
 #menu ul li a:hover{
     color: #696969;
-   font-weight: bold;
 }
 
 
@@ -106,10 +106,12 @@ button:hover{
 
 #rules{
     display: inline-block;
-    width: 30%;
+    text-align: justify;
+    width: 25%;
     float: left;
     margin-top: 3%;
     margin-left: 5%;
+   
 }
 
 #rules h3{
@@ -129,8 +131,10 @@ button:hover{
 
 #highs{
     display: none;
-    width: 50%;
-    padding-left: 25%;
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
+    align-content: center;
 }
 
 #highs h3{
@@ -138,41 +142,50 @@ button:hover{
 }
 
 #game{
-    display: none;     
+    display: none;   
+    width: 100%;
+     margin: 0 auto;
+    text-align: center;
+    align-content: center;
 }
 
 #mode{
     display: none;
-    width: 50%;
+    width: 100%;
     align-content: center;
-    padding-left: 40%;
-    text-align: left;
+    margin: 0 auto;
+    align-content: center;
+    text-align: center;
 }
 
 #modePlay{
     display: none;
-    width: 50%;
+    width: 100%;
+    margin: 0 auto;
+    text-align: center;
     align-content: center;
-    padding-left: 35%;
 }
 
 #tabuleiro{
     display: inline-block;
-    width: 55%;
+    width: 60%;
     margin-left: 10%;
     margin-top: 5%;
 }
 
 #login{
     display: block;
-    width: 50%;
-    padding-left: 30%;
+    width: 100%;
+     margin: 0 auto;
+    text-align: center;
+    align-content: center;
 }
 
 #pcturn{
     display:none;
-    align-content: center;
-    padding-left: 49%;
+    width: 100%;
+    margin: 0 auto;
+    padding-left: 65%;
 }
 
 /* tabuleiro do jogo */
@@ -189,4 +202,38 @@ button:hover{
     height:	50px;
     display: inline-block;
     margin: 0 auto;
+}
+
+/* tabela classificativa */
+#highscore_table{
+    width: 55%;
+    text-align: center;
+    margin: 0 auto;   
+}
+
+#title{
+    display: block;  
+    border-radius: 4px;
+}
+
+#colunas{
+    display: inline-block;
+    background-color:#555;
+    color: white;
+    width: 20%;
+    padding: 0.99%;
+    border: 1px solid white;
+}
+
+#linhas{
+   display: block;  
+    border-radius: 4px; 
+}
+
+#col{
+    display: inline-block;
+    width: 20%;
+    padding: 0.99%;
+    border: 1px solid black;
+    border-top-color: white;
 }
