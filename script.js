@@ -52,6 +52,7 @@ function quitGame(){
         removetable("tab1");
         toggleDisplayNone('quit');
         toggleDisplayNone('pcturn');
+        pointsPC++;
         alert("You lost! Game over :(");
     }  
 }

@@ -15,7 +15,6 @@ function updateLines(){
     tableLines = document.getElementById('numLinhas').value;
 }
 
-//console.log(tableLines+1);
 tab = new Array (tableLines+1);
 original = new Array (tableLines+1);
 
@@ -45,11 +44,9 @@ function buildBoard(){
             columns.appendChild(img);
             lines.appendChild(columns);
         }
-        //console.log(j)
         tab[i] = j;
         original[i] = j;
         tabuleiro.appendChild(lines);
-
     }
     bodygame.appendChild(tabuleiro);
 }
@@ -87,69 +84,60 @@ function turn(){
 function aiTurn(){    
     switch(difficulty) {
         case "Beginner":
-                aiBegginerTurn();
-                break;
+			aiBegginerTurn();
+			break;
         case "Intermediate":
-                aiIntermediateTurn();
-                break;
+			aiIntermediateTurn();
+			break;
         case "Expert":
-                winningStrategy();
-                break;
+			computer_turn();
+			break;
         default:
-                aiBegginerTurn();
-                break;
+			aiBegginerTurn();
+			break;
     } 
 }
 
 
 function player_draught(line , col) {
-    //console.log(row)
-    //console.log(next_to_that)
-    sumall = 0;
-    for(var i=0; i< tableLines; i++){
-        sumall += tab[i];
-    }
 
     if ((next_to_that==20 || next_to_that==21) && tab[line]!=0)
         next_to_that=line
-    if (next_to_that==line && tab[line]!=0) remove(line,col)
-        if (sumall==0){
-            alert("You Lost :( Try Again :)");
-            pointsPC++;
-        }
-}
-
-
-function  aiBegginerTurn(){
+    if (next_to_that==line && tab[line]!=0) 
+        remove(line,col)
+    else if(next_to_that!=line && tab[line]!=0)
+        alert("The same line must be played!");
 
     sumall = 0;
     for(var i=0; i< tableLines; i++){
         sumall += tab[i];
     }
 
-    console.log(sumall);
-
-    if(sumall==0){
-        alert("parabens ganhaste um rebuçado!");
+    if (sumall==0){
+        alert("You Win :)");
         toggleDisplayNone('pcturn');
         toggleDisplayNone('quit');
         pointsUser++;
     }
+}
+
+var getRandomInt = function(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+};
+
+
+function  aiBegginerTurn(){
 
     next_to_that = 20;
 
     var cenas1 = Math.floor((Math.random() * tableLines) + 0)
     var cenas2 = Math.floor((Math.random() * tab[cenas1]) + 0)
 
-    console.log(cenas1 + " " + cenas2)
     if(document.getElementById(cenas1+","+cenas2).style.visibility == "hidden"){
-        console.log("escondido")
 
         for(var j=0; j<tableLines;j++){
-            console.log(tab[j]);
             if(tab[j]>0){
                 for(var k=0; k<original[j]; k++){
-                    console.log(j,k)
                     if(document.getElementById(j+","+k).style.visibility != "hidden"){
                         remove(j,k);
                         break;
@@ -159,82 +147,112 @@ function  aiBegginerTurn(){
             }
         }
     }
-
     else
         remove(cenas1, cenas2);
-}
-
-function aiIntermediateTurn(){
-    switch(getRandomInteger(0,1)){
-        case 0:
-            aiBegginerTurn();
-            break;
-        case 1:
-            winningStrategy();
-            break;
-        default:
-            aiBegginerTurn();
-            break;
-    }
-}
-
-function winningStrategy() {
-
-    next_to_that = 20;
 
     sumall = 0;
     for(var i=0; i< tableLines; i++){
         sumall += tab[i];
     }
 
-    if(sumall == 0){
-        alert("You win :)")
+    if(sumall==0){
+        alert("You lost :(");
         toggleDisplayNone('pcturn');
         toggleDisplayNone('quit');
-        pointsUser++;
+        pointsPc++;
     }
-    var X = boardXor(tab);
+}
 
-    if (X == 0) {
-        aiBegginerTurn();
-        return;
-    }
-    console.log(tab.length)
-    for(var i = 0; i < tab.length; i++) {
-        var xorvalue = X ^ tab[i]
-        if(xorvalue < tab[i] && tab[i] > 0) {
-            var line = tableLines - xorvalue;
-            console.log(line + " " + i)
-            remove(line, i+1);
-            //bremove("div("+line+"," +(i+1)+ ")", false);
-            return;
-        }
+function aiIntermediateTurn(){
+    switch(getRandomInteger(0,1)){
+        case 0:
+			aiBegginerTurn();
+			break;
+        case 1:
+			computer_turn();
+			break;
+        default:
+			aiBegginerTurn();
+			break;
     }
 }
 
 
-function boardXor(columns) {
-    var xor = 0;
-    //console.log(columns.length)
-    for(var i = 0; i < columns.length; i++) {
-        //console.log(columns[i])
-        xor ^= columns[i];
-        console.log(xor);
-    }
-    return xor;
-}
+function computer_turn(){
 
+	var nimSumAll = 0,                          // Nim-sum of all the heap sizes
+	nimSumEach = Array(tab.length),      // Nim-sum of each heap size with nimSumAll
+	selectedLin, selectedTok;               // Indices of the computer's selected token
+
+	next_to_that = 20;
+
+	nimSumAll = tab[0];               
+	for (var i=1; i<tab.length; i++)
+		nimSumAll ^= tab[i];
+
+	if (nimSumAll === 0) {
+		aiBegginerTurn();
+	}
+	else {
+		for (i=0; i<tab.length; i++){
+			nimSumEach[i] = tab[i] ^ nimSumAll;
+		}
+
+		for (i=0; i<tab.length; i++) {
+			if (nimSumEach[i] < tab[i]) {
+				selectedLin = i;
+				selectedTok = nimSumEach[i];
+				break;
+			}
+		}
+	}
+	remove_int(selectedLin,selectedTok);
+
+	sumall = 0;
+	for(var i=0; i< tableLines; i++){
+		sumall += tab[i];
+	}
+
+	if(sumall == 0){
+		alert("You lost :(")
+		toggleDisplayNone('pcturn');
+		toggleDisplayNone('quit');
+		pointsPC++;
+	}
+
+}
 
 function remove(line,col){
-    //console.log(line + " " + col);
+	var x = document.getElementById(line+","+col)
+	x.style.visibility="hidden";
 
-    var x = document.getElementById(line+","+col)
-    x.style.visibility="hidden";
+	tab[line]--;
+}
 
-    tab[line]--;
+function remove_int(line,tokens){
+
+	for(var j=0; j<tokens; ){
+		for(var i=0; i < original[line]; i++){
+			if(document.getElementById(line+","+i).style.visibility != "hidden" && j<tokens){
+				tab[line] --;
+				j++;
+				document.getElementById(line+","+i).style.visibility = "hidden";
+			}
+		}
+	}
+	
+	if(tokens === 0){
+		for(var i=0; i < original[line]; i++){
+			if(document.getElementById(line+","+i).style.visibility != "hidden"){
+				tab[line] --;
+				document.getElementById(line+","+i).style.visibility = "hidden";
+			}
+		}
+	}
+
 }
 
 //random numero
 function getRandomInteger(min, max) {
-    return Math.random() * (max - min) + min;
+	return Math.random() * (max - min) + min;
 }
