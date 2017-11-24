@@ -76,8 +76,15 @@ function turn(){
     if(document.getElementById("computer").checked == true){
         aiTurn();
     }
-    else
+    if(document.getElementById("opponent").checked == true){
+        wait_for_next_player(); 
+    }
+    else{
         next_to_that = 21
+        toggleDisplayNone('wait');
+        toggleDisplayNone('giveup');
+        toggleDisplayBlock('tabuleiro');
+    }
 }
 
 //escolha da dificuldade, no caso de nao ser escolhida nenhuma por defeito usa a do beginner
@@ -255,4 +262,13 @@ function remove_int(line,tokens){
 //random numero
 function getRandomInteger(min, max) {
 	return Math.random() * (max - min) + min;
+}
+
+//no caso de ser o adversario a jogar
+function wait_for_next_player() {
+    toggleDisplayBlock('wait');
+    toggleDisplayBlock('giveup');
+    toggleDisplayNone('pcturn');
+    toggleDisplayNone('tabuleiro');
+    update();
 }

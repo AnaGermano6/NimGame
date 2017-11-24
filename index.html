@@ -14,11 +14,12 @@
         <link rel="stylesheet" href="style.css" type="text/css">
         
         <!--JAVASCRIPT files -->
-        <script src="script.js"></script>
-        <script src="scriptGame.js"></script>
+        <script src="script.js" type="text/javascript"></script>
+        <script src="ScriptConnection.js" type="text/javascript"></script>
+        <script src="scriptGame.js" type="text/javascript"></script>
         
     </head>
-    <body onload="">
+    <body onload="ranking()">
         <!-- cabeçalho da pagina -->
         <div class="header">
             
@@ -45,9 +46,9 @@
             <div id="login">
                 <p>Username: <input id="username" type="text"></p>
                 <p>Password: <input id="password" type="password"></p>
-                <button id="register" onclick="">Register</button>
+                <button id="register" onclick="validate_register()">Register</button>
                 &nbsp; <!-- espaço -->
-                <button id="submit" onclick="authentication()">Login</button>
+                <button id="submit" onclick="validate_login()">Login</button>
             </div>
             
             <!-- modo de contra computador ou multiplayer -->
@@ -66,8 +67,10 @@
                      <input type="radio" name="difficulty" id="expert">Expert</p>
                      <p>Board size: <input type="number" id="numLinhas" min="3" max="8"></p>
                     <p>Who starts the game?</p>
-                    <p><input type="radio" name="player" id="computer">Computer<br>
-                    <input type="radio" name="player" id="human">Human</p>                 
+                     <input type="radio" name="player" id="human">Human<br>
+                     <p id="startComputer"> <input type="radio" name="player" id="computer">Computer</p>
+                     <p id="startOpponent"><input type="radio" name="player" id="opponent">Opponent</p>
+                     <p></p>
                      <button type="button" value="Play Offline" onclick="buttonPlayGame()">Play Game</button>
                 </form>
             </div>
@@ -89,6 +92,14 @@
                 <div id="tabuleiro"></div>
                 <div id="pcturn">
                       <button type="button" value="0" onclick="aiTurn()" id="computerturn">Computer Turn</button> 
+                     <button type="button"  onclick="wait_for_next_player()" id="OpponentTurn">Opponent Turn</button> 
+                </div>
+                <div id="wait">
+                    <p>Waiting for another player.<br>
+                    Please wait...</p>
+                </div>
+                <div id="desiste">
+                    <button type="button" onclick="quitOPP()" id="giveup">To give up</button> 
                 </div>
             </div>
             <div id="highs">

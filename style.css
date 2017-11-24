@@ -80,11 +80,11 @@ button:hover{
     list-style: none;
 }
 
-#menu ul li{
+#menu ul, li{
     display: inline;
 }
 
-#menu ul li a{
+#menu ul, li, a{
     padding: 2px 10px;
     display: inline-block;
     text-decoration: none;
@@ -92,7 +92,7 @@ button:hover{
     font-family: sans-serif;
 }
 
-#menu ul li a:hover{
+#menu ul, li, a:hover{
     color: #696969;
 }
 
@@ -188,6 +188,17 @@ button:hover{
     padding-left: 65%;
 }
 
+#startComputer, #startOpponent{
+   margin: 0;
+}
+
+#wait{
+    display: none; 
+}
+
+#giveup{
+    display: none;
+}
 /* tabuleiro do jogo */
 #lines{
     display: block;
@@ -235,5 +246,5 @@ button:hover{
     width: 20%;
     padding: 0.99%;
     border: 1px solid black;
-    border-top-color: white;
+    border-top: none;
 }
