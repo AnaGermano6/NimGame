@@ -9,28 +9,12 @@ function validate(value) {
 
 //verifica se tem caracteres especiais e regista o login
 function validate_register() {
-
     if (validate(document.getElementById('username').value) && validate(document.getElementById('password').value))
-        validate_login();
-       // register();
+        register();
     else {
         alert("Username or password contain an invalid character.\nPlease try again.");
     }
 }
-
-//faz o registo do login
-function validate_login() {
-    if (validate(document.getElementById('username').value) && validate(document.getElementById('password').value)) {
-        
-       var name = document.getElementById('username').value;
-       var pass = document.getElementById('password').value;
-        register(); //regista os valores 
-    }
-    else {
-        alert("Wrong credentials.\nTry again.");
-    }
-}
-
 
 function register_sucess() {
     var name = document.getElementById('username').value;
@@ -65,8 +49,7 @@ function multiPlayer(){
    toggleDisplayNone('startComputer');
    toggleDisplayNone('computerturn'); 
    toggleDisplayBlock('OpponentTurn');  
-   join();
-   tab_highsOnline();
+  // tab_highsOnline();
 }
 
 //botao play game 
@@ -86,6 +69,12 @@ function buttonPlayGame(){
     
     //verifica quem inicia o jogo
     turn();
+    
+    //no caso de multiplayer 
+    ranking();
+    
+    //entra no jogo
+    join();
 }
 
 // desistir do jogo 
@@ -104,8 +93,6 @@ function quitGame(){
 function quitOPP(){
     if(confirm("Are you sure you want to give up?")==true){
         removetable("tab1");
-        //toggleDisplayNone('quit');
-        //toggleDisplayNone('pcturn');
         toggleDisplayNone('game');
         toggleDisplayBlock('modePlay');
         leave();
@@ -206,19 +193,20 @@ function tab_highs(){
 
 
 //tabela das classificaçoes de jogos online
-function tab_highsOnline(){
-    removetable("highscore_table");
+function tab_highsOnline(ranking_data){ 
+    
+    removetable("highscore_table_multiplayer");
 
     var body = document.getElementById("highs");
     var tab = document.createElement('div');
-    tab.setAttribute("id", "highscore_table");
+    tab.setAttribute("id", "highscore_table_multiplayer");
 
     for(var i=0; i<1; i++){
         var title = document.createElement('div');
-        title.setAttribute("id", "title");
+        title.setAttribute("id", "title_multiplayer");
         for(var j=0; j<6; j++){
             var colunas = document.createElement('div');
-            colunas.setAttribute("id", "colunas");
+            colunas.setAttribute("id", "colunas_multiplayer");
             if(j==0){
                 colunas.textContent = "Num";
                 title.appendChild(colunas);
@@ -248,14 +236,14 @@ function tab_highsOnline(){
     }
  
    //corpo da tabela
-    for(var i=0; i<10; i++){
+    for(var i=1; i<=10; i++){
         var linhas = document.createElement('div');
-        linhas.setAttribute("id", "linhas");
+        linhas.setAttribute("id", "linhas_multiplayer");
         for(var j=0; j<5; j++){
             var col = document.createElement('div');
-            col.setAttribute("id", "col");
+            col.setAttribute("id", "col_multiplayer");
             if(j==0){
-                var num = document.createTextNode(i+1);
+                var num = document.createTextNode(i);
                 col.appendChild(num);
                 linhas.appendChild(col);
             }

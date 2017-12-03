@@ -1,7 +1,4 @@
 var url = 'http://twserver.alunos.dcc.fc.up.pt:8008/';
-var json;
-var response;
-var group = 99;
 var key;
 var game;
 var data = '';
@@ -21,7 +18,6 @@ function getPass(){
 function getSize(){
     return document.getElementById('numLinhas').value;
 }
-
 /**
  * Retornar true ou false se o user foi registrado com sucesso.
  * O registro também deve entrar no user no servidor.
@@ -33,56 +29,48 @@ function register() {
     //constroi um pedido http request
     var xhr = new XMLHttpRequest();
     xhr.open('POST', url + 'register', true);
-    xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
-
-   
-
-    xhr.onloadend = function () {
-        response = JSON.parse(xhr.responseText);
-
-        if (response.error == undefined) {
-            console.log("returning 1");
-            register_sucess();
-            return 1;
-        }
-        else {
-            alert('Erro: ' + response.error);
-            return 0;
-        }
-    };
     
-     // envia os dados coletados como JSON
+    // envia os dados coletados como JSON
     xhr.send(JSON.stringify(data));
+
+    xhr.onreadystatechange = function(){
+        if(xhr.readyState < 4 && xhr.status == 400 ){
+            var response = JSON.parse(xhr.responseText);
+              alert("Error: " + response.error);
+        }
+        else if(xhr.status == 200 && xhr.readyState == 4){
+            register_sucess();
+        }
+    }
 }
 
 
 function join() {
     
-    data = {'group': group, 'nick': getName(), 'pass': getPass(), 'size': getSize()};
+    data = {'group': 99, 'nick': getName(), 'pass': getPass(), 'size': getSize()};
 
     // construct an HTTP request
     var xhr = new XMLHttpRequest();
     xhr.open('POST', url + 'join', true);
-    xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
 
     // envia os dados coletados como JSON
     xhr.send(JSON.stringify(data));
 
-    xhr.onloadend = function () {
-        response = JSON.parse(xhr.responseText);
+    xhr.onreadystatechange = function () {
+       var response = JSON.parse(xhr.responseText);
 
-        if (response.error == undefined) {
+        if (xhr.readyState == 4 && xhr.status == 200) {
             key = response.key;
             game = response.game;
-            wait_for_next_player();
+           // alert(game)
+            //update()
         }
         else alert('Erro: ' + response.error);
     };
 }
 
-/*
 function update() {
-    var source = new EventSource(url + 'update?name=' + getName() + '&game=' + game + '&key=' + key);
+    var source = new EventSource(url + 'update?game=' + game + '&name=' + getName());
 
     source.onmessage = function response(event) {
         var json = JSON.parse(event.data);
@@ -96,41 +84,37 @@ function update() {
             toggleDisplayBlock('game');
             toggleDisplayBlock('pcturn');
             toggleDisplayNone('wait');
-            getvalue();
             opponent = json.opponent;
             turn = json.turn;
 
-            alert('Opponent: ' + opponent + ' Turn: ' + turn);
-            MultiGame(turn);
+            alert(turn + " " + opponent);
 
+            alert('Opponent: ' + opponent + ' Turn: ' + turn);
         }
         if (json.move != undefined) {
-
+            return;
         }
 
         if (json.winner != undefined) {
             gameinprogress=0;
-            alert("O jogador " + json.winner + " ganhou o jogo!! Parabens!")
             //actualiza
             gameover(json.winner);
         }
     };
 }
-*/
 
 function leave() {
-    data = {'nick': getName(), 'pass': getPass(), 'game': game};
+    data = {'nick': getName(), 'pass': getPass(), 'game': game, };
 
     // construct an HTTP request
     var xhr = new XMLHttpRequest();
     xhr.open('POST', url + 'leave', true);
-    xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
 
     // envia os dados coletados como JSON
     xhr.send(JSON.stringify(data));
 
-    xhr.onloadend = function () {
-        response = JSON.parse(xhr.responseText);
+    xhr.onload = function () {
+        var response = JSON.parse(xhr.responseText);
 
         if (response.error == undefined) {
             gameinprogress = 0;
@@ -141,31 +125,33 @@ function leave() {
     };
 }
 
-/*
+
 function notify() {
-    data = {'nick': getName(), 'game': game, 'stack': stack, 'pieces': pieces};
+    data = {'nick': getName(), 'game': game, 'stack': stack, 'pieces': sumall};
+    
+    alert(sumall);
+    //pieces numero de peças que ainda existem no tabuleiro
+    //stack posiçao da pilha onde e feita no tabuleiro
+    
 
     // construct an HTTP request
     var xhr = new XMLHttpRequest();
     xhr.open('POST', url + 'notify', true);
-    xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
 
- // envia os dados coletados como JSON
+    // envia os dados coletados como JSON
     xhr.send(JSON.stringify(data));
 
     xhr.onloadend = function () {
-        response = JSON.parse(xhr.responseText);
+        var response = JSON.parse(xhr.responseText);
 
         if (response.error == undefined) {
-        update_game();
+          update_game();
         }
         else {
             alert('Erro: ' + response.error);
         }
     };
 }
-*/
-
 
 function ranking() {
 
@@ -173,16 +159,18 @@ function ranking() {
 
     var xhr = new XMLHttpRequest();
     xhr.open('POST', url + 'ranking', true);
-    xhr.setRequestHeader('Content-Type', 'application/json; charset=UTF-8');
 
- // envia os dados coletados como JSON
+    // envia os dados coletados como JSON
     xhr.send(JSON.stringify(data));
+    console.log(data);
 
     xhr.onloadend = function () {
-        response = JSON.parse(xhr.responseText);
+       var response = JSON.parse(xhr.responseText);
 
         if (response.error == undefined) {
-            ranking_data = response.ranking;
+           ranking_data = response.ranking;
+            tab_highsOnline(ranking_data);
+            console.log(ranking_data);
         }
         else alert('Erro: ' + response.error);
     };

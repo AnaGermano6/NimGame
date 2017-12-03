@@ -12,7 +12,10 @@ var original;
 
 //Verifica qual o numero de linhas inserido pelo utilizador
 function updateLines(){
-    tableLines = document.getElementById('numLinhas').value;
+   tableLines = document.getElementById('numLinhas').value;
+   // var e = document.getElementById("numLinhas");
+   // tableLines = e.options[e.selectedIndex].value;
+
 }
 
 tab = new Array (tableLines+1);
@@ -79,11 +82,12 @@ function turn(){
     if(document.getElementById("opponent").checked == true){
         wait_for_next_player(); 
     }
-    else{
+    if(document.getElementById("human").checked == true){
         next_to_that = 21
         toggleDisplayNone('wait');
         toggleDisplayNone('giveup');
         toggleDisplayBlock('tabuleiro');
+        toggleDisplayBlock('pcturn');
     }
 }
 
@@ -271,4 +275,8 @@ function wait_for_next_player() {
     toggleDisplayNone('pcturn');
     toggleDisplayNone('tabuleiro');
     update();
+}
+
+function gameover(winner) {
+    alert("Player " + winner + " won!");
 }

@@ -185,11 +185,17 @@ button:hover{
     display:none;
     width: 100%;
     margin: 0 auto;
-    padding-left: 65%;
+    text-align: center;
+    align-content: center;
+   /* padding-left: 65%;*/
 }
 
 #startComputer, #startOpponent{
    margin: 0;
+}
+
+#OpponentTurn{
+    margin: 0 auto;
 }
 
 #wait{
@@ -198,7 +204,9 @@ button:hover{
 
 #giveup{
     display: none;
+    margin: 0 auto;
 }
+
 /* tabuleiro do jogo */
 #lines{
     display: block;
@@ -222,7 +230,18 @@ button:hover{
     margin: 0 auto;   
 }
 
+#highscore_table_multiplayer{
+   /* width: 90%;*/
+    text-align: center;
+    margin: 0 auto;   
+}
+
 #title{
+    display: block;  
+    border-radius: 4px;
+}
+
+#title_multiplayer{
     display: block;  
     border-radius: 4px;
 }
@@ -236,7 +255,21 @@ button:hover{
     border: 1px solid white;
 }
 
+#colunas_multiplayer{
+    display: inline-block;
+    background-color:#555;
+    color: white;
+   /* width: 10%;*/
+  /*  padding: 0.99%;*/
+    border: 1px solid white;
+}
+
 #linhas{
+   display: block;  
+    border-radius: 4px; 
+}
+
+#linhas_multiplayer{
    display: block;  
     border-radius: 4px; 
 }
@@ -245,6 +278,14 @@ button:hover{
     display: inline-block;
     width: 20%;
     padding: 0.99%;
+    border: 1px solid black;
+    border-top: none;
+}
+
+#col_multiplayer{
+    display: inline-block;
+   /* width: 10%;*/
+   /* padding: 0.99%;*/
     border: 1px solid black;
     border-top: none;
 }

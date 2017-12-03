@@ -19,7 +19,7 @@
         <script src="scriptGame.js" type="text/javascript"></script>
         
     </head>
-    <body onload="ranking()">
+    <body onload="">
         <!-- cabeçalho da pagina -->
         <div class="header">
             
@@ -46,9 +46,7 @@
             <div id="login">
                 <p>Username: <input id="username" type="text"></p>
                 <p>Password: <input id="password" type="password"></p>
-                <button id="register" onclick="validate_register()">Register</button>
-                &nbsp; <!-- espaço -->
-                <button id="submit" onclick="validate_login()">Login</button>
+                <button id="register" onclick="validate_register()">Login</button>
             </div>
             
             <!-- modo de contra computador ou multiplayer -->
@@ -65,7 +63,16 @@
                      <p><input type="radio" name="difficulty" id="beginner">Beginner<br>
                      <input type="radio" name="difficulty" id="intermediate">Intermediate<br>
                      <input type="radio" name="difficulty" id="expert">Expert</p>
-                     <p>Board size: <input type="number" id="numLinhas" min="3" max="8"></p>
+                     <p>Board size: <input type="number" id="numLinhas" min="3" max="8">
+                    <!-- <select name="numLinhas" form="size" id"numLinhas">
+                        <option value="3">3</option>
+                        <option value="4">4</option>
+                        <option value="5">5</option>
+                        <option value="6">6</option>
+                        <option value="7">7</option>
+                        <option value="8">8</option>
+                    </select>-->
+                     </p>
                     <p>Who starts the game?</p>
                      <input type="radio" name="player" id="human">Human<br>
                      <p id="startComputer"> <input type="radio" name="player" id="computer">Computer</p>
