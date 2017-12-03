@@ -1,6 +1,7 @@
 var url = 'http://twserver.alunos.dcc.fc.up.pt:8008/';
-var key;
 var game;
+var source;
+var response;
 var data = '';
 var opponent = '';
 var turn = '';
@@ -18,6 +19,11 @@ function getPass(){
 function getSize(){
     return document.getElementById('numLinhas').value;
 }
+
+function getStack(){
+    return line+","+col;
+}
+
 /**
  * Retornar true ou false se o user foi registrado com sucesso.
  * O registro também deve entrar no user no servidor.
@@ -55,56 +61,47 @@ function join() {
 
     // envia os dados coletados como JSON
     xhr.send(JSON.stringify(data));
+  
+    xhr.onloadend = function () {
+        response = JSON.parse(xhr.responseText);
 
-    xhr.onreadystatechange = function () {
-       var response = JSON.parse(xhr.responseText);
-
-        if (xhr.readyState == 4 && xhr.status == 200) {
-            key = response.key;
+        if (response.error == undefined) {
             game = response.game;
-           // alert(game)
-            //update()
         }
         else alert('Erro: ' + response.error);
     };
 }
 
+
 function update() {
-    var source = new EventSource(url + 'update?game=' + game + '&name=' + getName());
+    source = new EventSource(url + 'update?game=' + game + '&name=' + getName());
 
     source.onmessage = function response(event) {
         var json = JSON.parse(event.data);
 
         if (json.error != null) {
-            event.target.close();
+            event.close();
         }
 
-        if (json.opponent) {
+        if (json.hasOwnProperty("rack") && !json.hasOwnProperty("pieces")){
             gameinprogress = 1;
             toggleDisplayBlock('game');
             toggleDisplayBlock('pcturn');
             toggleDisplayNone('wait');
-            opponent = json.opponent;
+            toggleDisplayBlock('comand');
             turn = json.turn;
-
-            alert(turn + " " + opponent);
-
-            alert('Opponent: ' + opponent + ' Turn: ' + turn);
-        }
-        if (json.move != undefined) {
-            return;
         }
 
         if (json.winner != undefined) {
             gameinprogress=0;
-            //actualiza
-            gameover(json.winner);
+            alert("Player " + winner + " won!");
         }
     };
 }
 
+
 function leave() {
-    data = {'nick': getName(), 'pass': getPass(), 'game': game, };
+    data = {'nick': getName(), 'pass': getPass(), 'game': game};
 
     // construct an HTTP request
     var xhr = new XMLHttpRequest();
@@ -116,23 +113,19 @@ function leave() {
     xhr.onload = function () {
         var response = JSON.parse(xhr.responseText);
 
-        if (response.error == undefined) {
-            gameinprogress = 0;
-            gameover(response.winner);
+        if(response.hasOwnProperty("error")) {
+            console.log(response);
+            alert(response.error);
+        } else {
+            source.close();
         }
-        else alert('Erro: ' + response.error);
 
     };
 }
 
 
 function notify() {
-    data = {'nick': getName(), 'game': game, 'stack': stack, 'pieces': sumall};
-    
-    alert(sumall);
-    //pieces numero de peças que ainda existem no tabuleiro
-    //stack posiçao da pilha onde e feita no tabuleiro
-    
+    data = {'nick': getName(), 'game': game, 'stack': getStack(), 'pieces': sumall};    
 
     // construct an HTTP request
     var xhr = new XMLHttpRequest();
@@ -145,13 +138,14 @@ function notify() {
         var response = JSON.parse(xhr.responseText);
 
         if (response.error == undefined) {
-          update_game();
+            update();
         }
         else {
             alert('Erro: ' + response.error);
         }
     };
 }
+
 
 function ranking() {
 
@@ -162,15 +156,13 @@ function ranking() {
 
     // envia os dados coletados como JSON
     xhr.send(JSON.stringify(data));
-    console.log(data);
 
     xhr.onloadend = function () {
        var response = JSON.parse(xhr.responseText);
 
         if (response.error == undefined) {
            ranking_data = response.ranking;
-            tab_highsOnline(ranking_data);
-            console.log(ranking_data);
+           tab_highsOnline(ranking_data);
         }
         else alert('Erro: ' + response.error);
     };

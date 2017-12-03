@@ -9,13 +9,15 @@ var tab;
 var sumall=0;
 var next_to_that = 0;
 var original;
+var line;
+var col;
 
 //Verifica qual o numero de linhas inserido pelo utilizador
 function updateLines(){
    tableLines = document.getElementById('numLinhas').value;
-   // var e = document.getElementById("numLinhas");
-   // tableLines = e.options[e.selectedIndex].value;
-
+  /*  var e = document.getElementById("numLinhas");
+    tableLines = e.options[e.selectedIndex].value;
+*/
 }
 
 tab = new Array (tableLines+1);
@@ -41,7 +43,7 @@ function buildBoard(){
             var img = document.createElement('IMG');
             img.setAttribute("src", "p_granada.png");
             img.setAttribute("id", "img_parts");
-            img.setAttribute("alt", "");
+            img.setAttribute("alt", "");            
             columns.setAttribute("id", i+","+j);
             columns.setAttribute("onclick", "player_draught("+i+","+j+")");
             columns.appendChild(img);
@@ -77,17 +79,26 @@ function updateDifficulty(){
 //verifica quem inicia o jogo
 function turn(){
     if(document.getElementById("computer").checked == true){
+        toggleDisplayNone('wait');
         aiTurn();
     }
+    if(document.getElementById("human").checked == true){
+        next_to_that = 21;       
+    }
+}
+
+function turnOnline(){
     if(document.getElementById("opponent").checked == true){
         wait_for_next_player(); 
     }
-    if(document.getElementById("human").checked == true){
-        next_to_that = 21
+    if(document.getElementById("onlineHuman").checked == true){
+        next_to_that = 21;
         toggleDisplayNone('wait');
         toggleDisplayNone('giveup');
+        toggleDisplayNone('quit'); 
         toggleDisplayBlock('tabuleiro');
         toggleDisplayBlock('pcturn');
+        toggleDisplayBlock('quitonline'); 
     }
 }
 
@@ -273,10 +284,7 @@ function wait_for_next_player() {
     toggleDisplayBlock('wait');
     toggleDisplayBlock('giveup');
     toggleDisplayNone('pcturn');
+    toggleDisplayNone('comand');
     toggleDisplayNone('tabuleiro');
     update();
-}
-
-function gameover(winner) {
-    alert("Player " + winner + " won!");
 }

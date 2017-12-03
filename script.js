@@ -36,9 +36,12 @@ function logout(){
 function singlePlayer(){
    toggleDisplayBlock('mode'); 
    toggleDisplayNone('modePlay');
-   toggleDisplayNone('startOpponent');
+   toggleDisplayNone('startmultiplayer');
+   toggleDisplayBlock('startsingleplayer');  
    toggleDisplayBlock('computerturn'); 
    toggleDisplayNone('OpponentTurn'); 
+   toggleDisplayBlock('quit'); 
+   toggleDisplayNone('quitonline'); 
    tab_highs();
 }
 
@@ -46,10 +49,12 @@ function singlePlayer(){
 function multiPlayer(){
    toggleDisplayBlock('mode'); 
    toggleDisplayNone('modePlay');
-   toggleDisplayNone('startComputer');
+   toggleDisplayBlock('startmultiplayer');
+   toggleDisplayNone('startsingleplayer');  
    toggleDisplayNone('computerturn'); 
-   toggleDisplayBlock('OpponentTurn');  
-  // tab_highsOnline();
+   toggleDisplayBlock('OpponentTurn');
+   toggleDisplayNone('quit'); 
+   toggleDisplayBlock('quitonline'); 
 }
 
 //botao play game 
@@ -69,12 +74,31 @@ function buttonPlayGame(){
     
     //verifica quem inicia o jogo
     turn();
+}
+
+//botao play game 
+function buttonPlayGameMultiplayer(){
+    toggleDisplayNone('mode');
+    toggleDisplayNone('modePlay');
+    toggleDisplayBlock('game');
+    toggleDisplayBlock('pcturn');
+    toggleDisplayNone('highs');
+    toggleDisplayBlock('quitonline');
+    
+    //entra no jogo
+    join();
     
     //no caso de multiplayer 
     ranking();
     
-    //entra no jogo
-    join();
+    //verifica a dificuldade
+    updateDifficulty();
+    
+    //constroi tabuleiro
+    buildBoard();
+    
+    //verifica quem inicia o jogo
+    turnOnline();
 }
 
 // desistir do jogo 
@@ -83,8 +107,9 @@ function quitGame(){
         removetable("tab1");
         toggleDisplayNone('quit');
         toggleDisplayNone('pcturn');
+        toggleDisplayNone('wait');
+        toggleDisplayNone('giveup');
         pointsPC++;
-        leave();
         alert("You lost! Game over :(");
     }  
 }
@@ -94,7 +119,8 @@ function quitOPP(){
     if(confirm("Are you sure you want to give up?")==true){
         removetable("tab1");
         toggleDisplayNone('game');
-        toggleDisplayBlock('modePlay');
+        toggleDisplayNone('menu');
+        toggleDisplayBlock('login'); 
         leave();
     }  
 }
@@ -121,6 +147,18 @@ function toggleDisplayNone(id){
 
 function toggleDisplayBlock(id){  
     document.getElementById(id).style.display = 'block';
+}
+
+
+function draw() {
+  var body = document.getElementById("animacao");
+  var c = document.createElement("canvas");
+  c.setAttribute("id", "canvas");
+  var ctx = c.getContext("2d");
+  ctx.moveTo(0,10);
+  ctx.lineTo(0,10);
+  ctx.stroke();
+  body.appendChild(c);  
 }
 
 
@@ -191,7 +229,6 @@ function tab_highs(){
     body.appendChild(tab); 
 }
 
-
 //tabela das classificaçoes de jogos online
 function tab_highsOnline(ranking_data){ 
     
@@ -236,14 +273,14 @@ function tab_highsOnline(ranking_data){
     }
  
    //corpo da tabela
-    for(var i=1; i<=10; i++){
+    for(var i=0; i<10; i++){
         var linhas = document.createElement('div');
         linhas.setAttribute("id", "linhas_multiplayer");
-        for(var j=0; j<5; j++){
+        for(var j=0; j<6; j++){
             var col = document.createElement('div');
             col.setAttribute("id", "col_multiplayer");
             if(j==0){
-                var num = document.createTextNode(i);
+                var num = document.createTextNode(i+1);
                 col.appendChild(num);
                 linhas.appendChild(col);
             }
@@ -272,8 +309,7 @@ function tab_highsOnline(ranking_data){
                 var size = document.createTextNode(getSize());
                 col.appendChild(size);
                 linhas.appendChild(col);   
-            }
-            
+            } 
         }
         tab.appendChild(linhas);
     }
